@@ -1,10 +1,11 @@
 use std::sync::Arc;
 mod yellowstone;
-use crate::yellowstone::connect;
+use crate::{backpack::bids_query, yellowstone::connect};
 use tokio::sync::Mutex;
 use yellowstone::*;
 use yellowstone_grpc_proto::prelude::TokenBalance;
-
+mod backpack;
+use backpack::bids_query::getBestBidAndAsk;
 pub struct DEXstuct {
     token_in: u64,
     token_out: u64,
@@ -18,8 +19,8 @@ pub struct CEXstruct {
 #[tokio::main]
 async fn main() {
     //Three threads
-    // one for grpc streaming
-    // one for streaming api
+    // one for grpc streaming  (yellowstone)
+    // one for streaming api    (backpack)
     // one for main maths
 
     println!("A SOL/USDC ARB BOT");
@@ -32,5 +33,8 @@ async fn main() {
         best_bid: 064,
     });
 
-    let thread1 = tokio::spawn(async move { connect().await }).await;
-}
+    // let thread1 = tokio::spawn(async move { connect().await }).await;
+    let thread2=tokio::spawn(async move{
+        getBestBidAndAsk().await;
+    }).await;
+}   

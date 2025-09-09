@@ -30,7 +30,6 @@ pub async fn connect() {
         };
 
         accounts.insert("client".to_string(), filter);
-        println!("the filtereda accounts struct is {:?}", accounts);
         let request = SubscribeRequest {
             accounts: accounts,
             ..Default::default()
@@ -38,8 +37,7 @@ pub async fn connect() {
         let (_tx, mut stream) = client.subscribe_with_request(Some(request)).await.unwrap();
 
         while let Some(message) = stream.next().await {
-            println!("Controle reached innside the while loop");
-            println!("{:?}", message);
+            println!("Message is {:?}", message);
         }
     };
 }
