@@ -32,5 +32,5 @@ async fn main() {
         best_bid: 064,
     });
 
-    let thread1 = tokio::spawn(async move { connect() }).await;
+    let thread1 = tokio::spawn(async move { connect().await }).await;
 }
